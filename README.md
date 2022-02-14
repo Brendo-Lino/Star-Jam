@@ -46,11 +46,10 @@ powerful attacks;
 16. Implement different types of monsters, with different attacks;
 17. Any other extra that you may find interesting! ✔️
 
-
 ### Important Credits
 
-All assets credits to Ansimuz;
-Twitter @ansimuz
-Support his work at Patreon https://www.patreon.com/ansimuz
-Buy his stuff https://ansimuz.itch.io/
-Get Free Assets like the ones used at this project at: http://www.pixelgameart.org
+#### All assets credits to Ansimuz. <br />
+* Twitter @ansimuz. <br />
+* Support his work at Patreon https://www.patreon.com/ansimuz. <br />
+* Buy his stuff https://ansimuz.itch.io/. <br />
+* Get Free Assets like the ones used at this project at: http://www.pixelgameart.org.
