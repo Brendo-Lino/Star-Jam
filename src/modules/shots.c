@@ -93,7 +93,6 @@ void shots_update(void)
                                 drops_create(COIN, entities[j].object.x, entities[j].object.y);
                             }
                         }
-
                         break;
                     }
                 }
