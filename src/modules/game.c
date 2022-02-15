@@ -159,7 +159,10 @@ void game_run(void)
                 if (lost)
                 {
                     al_draw_bitmap(img_game_over, 1280 / 2 - al_get_bitmap_width(img_game_over) / 2, 720 / 2 - al_get_bitmap_height(img_game_over) / 2, 0);
-
+                    if (score >= record)
+                    {
+                        al_draw_text(size_64, al_map_rgb(255, 255, 255), 1280 / 2, 720 / 2 + al_get_bitmap_height(img_game_over) * 0.75, ALLEGRO_ALIGN_CENTER, "Congrats, new record!");
+                    }
                     al_draw_text(size_64, al_map_rgb(255, 255, 255), 1280 / 2, 720 / 2 + al_get_bitmap_height(img_game_over) / 2, ALLEGRO_ALIGN_CENTER, score_text);
                 }
                 al_flip_display();

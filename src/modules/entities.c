@@ -7,6 +7,7 @@ Entity entities[NUM_ENTITIES];
 Entity enemies[NUM_ENEMIES];
 
 ALLEGRO_BITMAP *img_red_guy = NULL;
+ALLEGRO_BITMAP *img_red_guy_ugly = NULL;
 ALLEGRO_BITMAP *img_explosion_normal = NULL;
 
 void entities_load(void)
@@ -17,12 +18,11 @@ void entities_load(void)
     img_explosion_normal = al_load_bitmap("assets/explosions/normal.png");
 
     Movable_Object red_guy_object = {
-        .image = al_load_bitmap("assets/enemies/red_boy.png"),
+        .image = img_red_guy,
         .has_animation = 1,
         .total_states = 5,
         .death_explosion_size = 1,
         .sprite_length = 46,
-        .animation_speed = 1,
         .animation_speed = 1,
         .speedX = 1,
         .speedY = 1,
@@ -34,7 +34,8 @@ void entities_load(void)
         .object = red_guy_object,
         .health = 1,
         .max_score = 10,
-        .min_score = 3};
+        .min_score = 3,
+    };
 
     enemies[0] = red_guy;
 }
@@ -83,7 +84,7 @@ void entities_create_random_enemy(void)
 {
     int n = rdm(0, NUM_ENEMIES - 1);
 
-    entities_create(enemies[0], (int)(SCREEN_W * 1.05), rdm(50, SCREEN_H - 120));
+    entities_create(enemies[n], (int)(SCREEN_W * 1.05), rdm(50, SCREEN_H - 120));
 }
 
 void entities_update(void)
