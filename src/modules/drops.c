@@ -43,7 +43,7 @@ int drops_create(DropType type, int x, int y)
             .death_explosion_size = 1,
             .death_animation_countdown = 0,
             .animation_speed = 1,
-            .speedX = 2,
+            .speedX = 4,
             .speedY = 0,
             .dirX = -1,
             .dirY = 0,
@@ -57,15 +57,18 @@ int drops_create(DropType type, int x, int y)
         switch (type)
         {
         case HEALTH:
+            printf("vida");
             drop.object.image = img_health;
             drop.object.sprite_length = al_get_bitmap_width(drop.object.image);
             drop.effect = drops_health_effect;
+            break;
         case COIN:
             drop.object.image = img_coin_sheet;
             drop.object.has_animation = 1;
             drop.object.sprite_length = 48;
             drop.object.total_states = 6;
             drop.effect = drops_coin_effect;
+            break;
         }
 
         drops[i] = drop;

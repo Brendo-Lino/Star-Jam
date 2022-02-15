@@ -85,9 +85,10 @@ void shots_update(void)
                         {
                             if (rdm(1, 5) == 1)
                             {
+
                                 drops_create(HEALTH, entities[j].object.x, entities[j].object.y);
                             }
-                            if (rdm(1, 15) == 1)
+                            else if (rdm(1, 10) == 2)
                             {
                                 drops_create(COIN, entities[j].object.x, entities[j].object.y);
                             }
