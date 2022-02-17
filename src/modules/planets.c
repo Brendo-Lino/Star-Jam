@@ -45,7 +45,7 @@ void planets_create_random_planet(int x, int y, int speed)
             }
             planets[i].object.id = i;
             planets[i].object.alive = 1;
-            planets[i].object.image = images[rdm(0, NUM_IMAGES - 1)];
+            planets[i].object.image = images[rdm(0, NUM_IMAGES - 2)];
             planets[i].size = al_get_bitmap_height(planets[i].object.image);
             if (planets[i].size >= 700)
             {
