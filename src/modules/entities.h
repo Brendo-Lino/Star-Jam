@@ -14,7 +14,7 @@ typedef struct Entity
     int min_score;
 } Entity;
 
-#define NUM_ENTITIES 100
+#define NUM_ENTITIES 15
 #define NUM_ENEMIES 1
 
 /* Loads all entities */

@@ -16,7 +16,6 @@ void planets_load(void)
 
         char path[100];
         sprintf(path, "assets/planets/%d.png", i + 1);
-        // sprintf(path, "assets/planets/%d.png", rdm(1, 2) == 1 ? 39 : 39);
         ALLEGRO_BITMAP *image = al_load_bitmap(path);
         images[i] = image;
     }
@@ -45,7 +44,14 @@ void planets_create_random_planet(int x, int y, int speed)
             }
             planets[i].object.id = i;
             planets[i].object.alive = 1;
-            planets[i].object.image = images[rdm(0, NUM_IMAGES - 2)];
+            if (rdm(1, 3) == 1 && y == 0 && boss > 0)
+            {
+                planets[i].object.image = images[38];
+            }
+            else
+            {
+                planets[i].object.image = images[rdm(0, NUM_IMAGES - 2)];
+            }
             planets[i].size = al_get_bitmap_height(planets[i].object.image);
             if (planets[i].size >= 700)
             {
@@ -73,7 +79,8 @@ void planets_create_random_planet(int x, int y, int speed)
             planets[i].object.total_states = al_get_bitmap_width(planets[i].object.image) / planets[i].size;
             planets[i].object.type = PLANET;
             aux += planets[i].size;
-            planets_create_random_planet(x + planets[i].size * 1.2, y, speed);
+            if (!tooBig)
+                planets_create_random_planet(x + planets[i].size * 1.2, y, speed);
             break;
         }
     }

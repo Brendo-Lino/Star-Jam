@@ -53,6 +53,11 @@ void stats_update(void)
     sprintf(record_text, "RECORD: %d", record);
     al_draw_text(size_32, al_map_rgb(255, 255, 255), hearts_x + 280, SCREEN_H / 100 * 3, ALLEGRO_ALIGN_LEFT, record_text);
 
+    /* Record */
+    char boss_text[100];
+    sprintf(boss_text, "BOSS: %d", boss < 0 ? 0 : boss);
+    al_draw_text(size_32, al_map_rgb(255, 255, 255), hearts_x + 560, SCREEN_H / 100 * 3, ALLEGRO_ALIGN_LEFT, boss_text);
+
     /* Coins */
     char coins_text[100];
     sprintf(coins_text, "%dx", coins);

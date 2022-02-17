@@ -92,8 +92,8 @@ void entities_update(void)
     Planet *planets;
     planets = planets_get_planets();
 
-    /* Attempts to create something each 0.5x seconds */
-    if (al_get_timer_count(timer) % (int)(100 * 0.2) == 0)
+    /* Attempts to create something each 0.3s */
+    if (al_get_timer_count(timer) % (int)(100 * 0.3) == 0)
     {
         entities_create_random_enemy();
     }
@@ -129,7 +129,7 @@ void entities_update(void)
                             {
                                 if (collisions_check_box(entities[i].object.box, entities[j].object.box))
                                 {
-                                    entities[j].health = 0;
+                                    entities[j].object.alive = 0;
                                     break;
                                 }
                             }

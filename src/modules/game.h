@@ -32,6 +32,8 @@ extern int playing;
 extern int selecting;
 extern int waiting;
 extern int lost;
+extern int boss;
+extern int op_shots;
 
 extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_EVENT_QUEUE *event_queue;

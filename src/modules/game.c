@@ -7,6 +7,8 @@ int selecting = 1;
 int waiting = 0;
 int lost = 0;
 int paused = 0;
+int boss = 50;
+int op_shots= 0;
 
 /*  Display and Event Queue */
 ALLEGRO_DISPLAY *display = NULL;
@@ -76,6 +78,7 @@ void game_reset(void)
 {
     coins = 0;
     score = 0;
+    boss = 20;
 
     /* Loads the record */
     FILE *record_file = fopen("data.txt", "r");
@@ -204,6 +207,9 @@ void game_process_keyboard(ALLEGRO_EVENT *event)
                 break;
             case ALLEGRO_KEY_P:
                 paused = !paused;
+                break;
+            case ALLEGRO_KEY_O:
+                op_shots = !op_shots;
                 break;
             }
         }

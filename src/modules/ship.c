@@ -74,7 +74,7 @@ void ship_update(void)
     }
 
     /* Borders limits and image update according to the direction */
-    if (!(ship.object.x <= 30 && ship.object.dirX < 0))
+    if (!(ship.object.x <= 30 && ship.object.dirX < 0) && !(ship.object.x >= 1200 && ship.object.dirX > 0))
     {
         ship.object.x += ship.object.dirX * ship.object.speedX;
     }

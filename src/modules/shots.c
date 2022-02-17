@@ -5,16 +5,17 @@
 ALLEGRO_BITMAP *img_shot_hit_sheet = NULL;
 ALLEGRO_BITMAP *img_shot_hit_charged_sheet = NULL;
 
+ALLEGRO_SAMPLE *planet_explosion = NULL;
+
 /* Sounds */
 
 Shot shots[NUM_SHOTS];
 
 void shots_load(void)
 {
-
+    planet_explosion = al_load_sample("assets/soundtrack/entity_explosion.ogg");
     img_shot_hit_sheet = al_load_bitmap("assets/shots/hit_sheet.png");
     img_shot_hit_charged_sheet = al_load_bitmap("assets/shots/hit_charged_sheet.png");
-
 }
 
 void shots_reset(void)
@@ -59,6 +60,22 @@ void shots_update(void)
                         {
                             shots[i].object.alive = 0;
                             shots[i].animation_countdown = 30;
+                            if (planets[j].size >= 700)
+                            {
+                                if (boss <= 0 && boss != -10)
+                                {
+                                    planets[i].object.alive = 0;
+                                    al_play_sample(planet_explosion, 2.0f, 0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+                                    boss = -10;
+                                    score *= 2;
+                                }
+                                else
+                                {
+                                    if (shots[i].charged || op_shots)
+                                        boss -= 4;
+                                    boss--;
+                                }
+                            }
                         }
                     }
                 }
@@ -70,7 +87,7 @@ void shots_update(void)
                 {
                     if (collisions_check_box(shots[i].object.box, entities[j].object.box))
                     {
-                        if (!shots[i].charged)
+                        if (!shots[i].charged && !op_shots)
                         {
                             shots[i].object.alive = 0;
                             shots[i].animation_countdown = 30;
@@ -83,7 +100,7 @@ void shots_update(void)
 
                                 drops_create(HEALTH, entities[j].object.x, entities[j].object.y);
                             }
-                            else if (rdm(1, 10) == 2)
+                            else if (rdm(1, 5) == 2)
                             {
                                 drops_create(COIN, entities[j].object.x, entities[j].object.y);
                             }
