@@ -57,7 +57,6 @@ int drops_create(DropType type, int x, int y)
         switch (type)
         {
         case HEALTH:
-            printf("vida");
             drop.object.image = img_health;
             drop.object.sprite_length = al_get_bitmap_width(drop.object.image);
             drop.effect = drops_health_effect;
