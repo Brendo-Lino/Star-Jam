@@ -57,7 +57,7 @@ void planets_create_random_planet(int x, int y, int speed)
                 if (!tooBig)
                     y = rdm(0, 720 - planets[i].size);
                 else
-                    y = rdm(1, 2) == 1 ? 400 : -820-720;
+                    y = 300;
             planets[i].object.x = x;
             planets[i].object.y = y;
             if (speed == 0)
