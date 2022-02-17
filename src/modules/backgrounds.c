@@ -14,7 +14,7 @@ void backgrounds_load(void)
 
 void backgrounds_reset(void)
 {
-    background_timer = al_create_timer(1.0 / 60);
+    background_timer = al_create_timer(1.0 / UPS);
     if (!background_timer)
     {
         fprintf(stderr, "failed to create timer!\n");

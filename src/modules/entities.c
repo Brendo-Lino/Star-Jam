@@ -1,7 +1,5 @@
 #include "game.h"
 
-ALLEGRO_TIMER *entities_timer = NULL;
-
 Entity entities[NUM_ENTITIES];
 
 Entity enemies[NUM_ENEMIES];
@@ -10,12 +8,15 @@ ALLEGRO_BITMAP *img_red_guy = NULL;
 ALLEGRO_BITMAP *img_red_guy_ugly = NULL;
 ALLEGRO_BITMAP *img_explosion_normal = NULL;
 
+ALLEGRO_SAMPLE *entity_explosion = NULL;
+
 void entities_load(void)
 {
     entities_reset();
 
     img_red_guy = al_load_bitmap("assets/enemies/red_boy.png");
     img_explosion_normal = al_load_bitmap("assets/explosions/normal.png");
+    entity_explosion = al_load_sample("assets/soundtrack/entity_explosion.ogg");
 
     Movable_Object red_guy_object = {
         .image = img_red_guy,
@@ -42,10 +43,6 @@ void entities_load(void)
 
 void entities_reset(void)
 {
-
-    entities_timer = al_create_timer(1.0 / 100);
-    al_start_timer(entities_timer);
-
     for (int i = 0; i < NUM_ENTITIES; i++)
     {
         entities[i].object.alive = 0;
@@ -68,7 +65,7 @@ int entities_create(Entity entity, int x, int y)
         entities[i].object.id = i;
         entities[i].object.x = x;
         entities[i].object.y = y;
-        int factorSpeed = al_get_timer_count(entities_timer) / (100 * 15);
+        int factorSpeed = al_get_timer_count(timer) / (100 * 15);
         entities[i].object.speedX = entities[i].object.speedX * rdm(3 + factorSpeed, 6 + factorSpeed);
         entities[i].object.image = entity.object.image;
         entities[i].object.alive = 1;
@@ -105,23 +102,19 @@ void entities_update(void)
     {
         motion_update(&entities[i].object);
 
-        if (al_get_timer_count(entities_timer) % 50 == 0)
+        if (al_get_timer_count(timer) % 50 == 0)
         {
             if (rdm(1, 2) == 1)
             {
                 entities[i].object.dirY = rdm(-1, 1);
             }
         }
-        if (al_get_timer_count(entities_timer) % 100 == 0)
-        {
-            entities[i].object.dirY = 0;
-        }
 
         if (entities[i].object.alive)
         {
             /* Checks for collisions each 0.01s */
             int hit = 0;
-            if (al_get_timer_count(entities_timer) % 1 == 0)
+            if (al_get_timer_count(timer) % 1 == 0)
             {
                 ObType collision = motion_collision(&entities[i].object);
                 if (collision != NONE)
@@ -129,10 +122,24 @@ void entities_update(void)
                     hit = 1;
                     switch (collision)
                     {
+                    case ENTITY:
+                        for (int j = 0; j < NUM_ENTITIES; j++)
+                        {
+                            if (entities[j].object.alive)
+                            {
+                                if (collisions_check_box(entities[i].object.box, entities[j].object.box))
+                                {
+                                    entities[j].health = 0;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
                         /* Destroys the entity if it hits the ship */
                     case SHIP:
                         ship->health -= 1;
                     }
+                    al_play_sample(entity_explosion, 0.5f, 0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
                 }
             }
 

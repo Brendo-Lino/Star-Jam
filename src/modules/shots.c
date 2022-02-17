@@ -1,7 +1,5 @@
 #include "game.h"
 
-ALLEGRO_TIMER *shot_timer = NULL;
-
 /* Images */
 
 ALLEGRO_BITMAP *img_shot_hit_sheet = NULL;
@@ -17,9 +15,6 @@ void shots_load(void)
     img_shot_hit_sheet = al_load_bitmap("assets/shots/hit_sheet.png");
     img_shot_hit_charged_sheet = al_load_bitmap("assets/shots/hit_charged_sheet.png");
 
-    shot_timer = al_create_timer(1.0 / 100);
-
-    al_start_timer(shot_timer);
 }
 
 void shots_reset(void)
@@ -53,7 +48,7 @@ void shots_update(void)
         {
             motion_update(&shots[i].object);
             /* Checks for collisions each 0.01s */
-            if (al_get_timer_count(shot_timer) % 1 == 0)
+            if (al_get_timer_count(timer) % 1 == 0)
             {
                 /* Destroys the shot if it hits a Planet */
                 for (int j = 0; j < NUM_PLANETS; j++)

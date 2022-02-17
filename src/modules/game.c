@@ -6,6 +6,7 @@ int playing = 0;
 int selecting = 1;
 int waiting = 0;
 int lost = 0;
+int paused = 0;
 
 /*  Display and Event Queue */
 ALLEGRO_DISPLAY *display = NULL;
@@ -123,7 +124,7 @@ void game_run(void)
         }
 
         /* Timers flips */
-        if (event.type == ALLEGRO_EVENT_TIMER)
+        if (event.type == ALLEGRO_EVENT_TIMER && !paused)
         {
             /* Display timer (60 flips per second) */
             if (event.timer.source == timer)
@@ -133,12 +134,6 @@ void game_run(void)
 
                 if (playing)
                 {
-
-                    /* Attemps to create a something else each 3 seconds */
-                    if (al_get_timer_count(timer) % (100 * 3) == 0)
-                    {
-                        planets_create_random_planet();
-                    }
 
                     /* Updates */
                     entities_update();
@@ -207,6 +202,9 @@ void game_process_keyboard(ALLEGRO_EVENT *event)
             case ALLEGRO_KEY_SPACE:
                 ship->shot_charging = 1;
                 break;
+            case ALLEGRO_KEY_P:
+                paused = !paused;
+                break;
             }
         }
     }
@@ -268,7 +266,7 @@ void game_load(void)
     drops_load();
 
     /* Sounds */
-    soundtrack = al_load_sample("assets/soundtrack/default.wav");
+    soundtrack = al_load_sample("assets/soundtrack/default.ogg");
 
     /* Images */
     img_game_over = al_load_bitmap("assets/stats/game_over.png");
@@ -312,8 +310,8 @@ void game_load_fonts(void)
 
 int game_reset_timers(void)
 {
-    // Creates a timer that increases one unit each 1.0/FPS second
-    timer = al_create_timer(1.0 / 100);
+    // Creates a timer that increases one unit each 1.0/UPS second
+    timer = al_create_timer(1.0 / UPS);
     if (!timer)
     {
         fprintf(stderr, "failed to create timer!\n");

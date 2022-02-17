@@ -24,6 +24,8 @@
 #include "drops.h"
 #include "motion.h"
 
+#define UPS 100
+
 /* Structural Variables */
 extern int running;
 extern int playing;

@@ -1,10 +1,10 @@
 #include "game.h"
 
-ALLEGRO_TIMER *planets_timer = NULL;
-
 Planet planets[NUM_PLANETS];
 
 ALLEGRO_BITMAP *images[NUM_IMAGES];
+
+int aux = 0;
 
 void planets_load(void)
 {
@@ -16,6 +16,7 @@ void planets_load(void)
 
         char path[100];
         sprintf(path, "assets/planets/%d.png", i + 1);
+        // sprintf(path, "assets/planets/%d.png", rdm(1, 2) == 1 ? 39 : 39);
         ALLEGRO_BITMAP *image = al_load_bitmap(path);
         images[i] = image;
     }
@@ -23,8 +24,6 @@ void planets_load(void)
 
 void planets_reset(void)
 {
-    planets_timer = al_create_timer(1.0 / 100);
-    al_start_timer(planets_timer);
 
     for (int i = 0; i < NUM_PLANETS; i++)
     {
@@ -32,19 +31,38 @@ void planets_reset(void)
     }
 }
 
-void planets_create_random_planet(void)
+void planets_create_random_planet(int x, int y, int speed)
 {
     for (int i = 0; i < NUM_PLANETS; i++)
     {
         if (!planets[i].object.alive)
         {
+            int tooBig = 0;
+            if (aux >= 1280)
+            {
+                aux = 0;
+                return;
+            }
             planets[i].object.id = i;
             planets[i].object.alive = 1;
             planets[i].object.image = images[rdm(0, NUM_IMAGES - 1)];
             planets[i].size = al_get_bitmap_height(planets[i].object.image);
-            planets[i].object.x = 1280 + 1280 * 0.1;
-            planets[i].object.y = rdm(0, 720 - planets[i].size);
-            planets[i].object.speedX = rdm(3, 5);
+            if (planets[i].size >= 700)
+            {
+                tooBig = 1;
+            }
+            if (x == 0)
+                x = 1280 + 1280 * 0.1;
+            if (y == 0)
+                if (!tooBig)
+                    y = rdm(0, 720 - planets[i].size);
+                else
+                    y = rdm(1, 2) == 1 ? 400 : -820-720;
+            planets[i].object.x = x;
+            planets[i].object.y = y;
+            if (speed == 0)
+                speed = rdm(3, 5);
+            planets[i].object.speedX = speed;
             planets[i].object.speedY = 0;
             planets[i].object.dirX = -1;
             planets[i].object.dirY = 0;
@@ -52,8 +70,10 @@ void planets_create_random_planet(void)
             planets[i].object.has_animation = 1;
             planets[i].object.animation_speed = 1;
             planets[i].object.sprite_length = planets[i].size;
-            planets[i].object.total_states = 10;
+            planets[i].object.total_states = al_get_bitmap_width(planets[i].object.image) / planets[i].size;
             planets[i].object.type = PLANET;
+            aux += planets[i].size;
+            planets_create_random_planet(x + planets[i].size * 1.2, y, speed);
             break;
         }
     }
@@ -61,6 +81,22 @@ void planets_create_random_planet(void)
 
 void planets_update(void)
 {
+
+    /* Attemps to create a something else each 3 seconds */
+    if (al_get_timer_count(timer) % (100 * 3) == 0)
+    {
+        int one_alive = 0;
+        for (int i = 0; i < NUM_PLANETS; i++)
+        {
+            if (planets[i].object.alive)
+            {
+                one_alive = 1;
+                break;
+            }
+        }
+        if (!one_alive)
+            planets_create_random_planet(0, 0, 0);
+    }
 
     for (int i = 0; i < NUM_PLANETS; i++)
     {

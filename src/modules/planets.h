@@ -10,7 +10,7 @@ typedef struct Planet
 } Planet;
 
 #define NUM_PLANETS 30
-#define NUM_IMAGES 38
+#define NUM_IMAGES 39
 
 /* Loads the planets array */
 void planets_load(void);
@@ -19,7 +19,7 @@ void planets_load(void);
 void planets_reset(void);
 
 /* Creates a random planet */
-void planets_create_random_planet(void);
+void planets_create_random_planet(int x, int y, int speed);
 
 /* Updates Planets */
 void planets_update(void);

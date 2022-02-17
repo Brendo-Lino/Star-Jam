@@ -1,7 +1,5 @@
 #include "game.h"
 
-ALLEGRO_TIMER *ship_timer = NULL;
-
 ALLEGRO_BITMAP *img_ship_default = NULL;
 ALLEGRO_BITMAP *img_ship_up = NULL;
 ALLEGRO_BITMAP *img_ship_down = NULL;
@@ -12,13 +10,12 @@ ALLEGRO_BITMAP *img_shot_default = NULL;
 ALLEGRO_BITMAP *img_shot_flash = NULL;
 
 ALLEGRO_SAMPLE *shot_sound_default = NULL;
+ALLEGRO_SAMPLE *ship_explosion = NULL;
 
 Ship ship;
 
 void ship_load(void)
 {
-    ship_timer = al_create_timer(1.0 / 100);
-    al_start_timer(ship_timer);
 
     img_ship_default = al_load_bitmap("assets/ship/default.png");
     img_ship_up = al_load_bitmap("assets/ship/up.png");
@@ -29,7 +26,8 @@ void ship_load(void)
     img_shot_default = al_load_bitmap("assets/shots/default.png");
     img_shot_flash = al_load_bitmap("assets/shots/flash.png");
 
-    shot_sound_default = al_load_sample("assets/shots/default.wav");
+    shot_sound_default = al_load_sample("assets/soundtrack/shot_default.ogg");
+    ship_explosion = al_load_sample("assets/soundtrack/ship_explosion.ogg");
 }
 
 void ship_reset(void)
@@ -67,6 +65,7 @@ void ship_update(void)
 
     if (ship.health <= 0)
     {
+        al_play_sample(ship_explosion, 0.5f, 0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
         if (!lost)
         {
             game_lose();
@@ -102,7 +101,7 @@ void ship_update(void)
     motion_update(&ship.object);
 
     /* Checks for collisions each 0.01s */
-    if (al_get_timer_count(ship_timer) % 1 == 0)
+    if (al_get_timer_count(timer) % 1 == 0)
     {
         ObType collision = motion_collision(&ship.object);
         if (collision != NONE)
@@ -131,7 +130,7 @@ void ship_update(void)
                 }
 
                 // Each 1/5 second
-                if (al_get_timer_count(ship_timer) % ((int)100 / 5) == 0)
+                if (al_get_timer_count(timer) % ((int)100 / 5) == 0)
                 {
                     if (ship.shot_charge == 4)
                     {
