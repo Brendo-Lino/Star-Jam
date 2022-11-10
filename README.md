@@ -5,7 +5,7 @@
  
  Guided by the instructions of Pedro O.S. Vaz de Melo, professor of the subject in the mentioned university. The project is meant to be a recreation of the game R-Type, a horizontally scrolling shooter arcade video game developed and released by Irem in 1987.
  
-![Spaceship Flying and Shooting](https://github.com/justbrendo/Star-Jam/tree/main/docs/star1.gif)
+![Spaceship Flying and Shooting](docs/star1.gif)
 
 ### Development Check List
 
